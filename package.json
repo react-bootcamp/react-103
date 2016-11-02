@@ -1,0 +1,24 @@
+{
+  "name": "react-wines-102",
+  "version": "0.1.0",
+  "private": true,
+  "homepage": "https://react-bootcamp.github.io/react-wines-102/",
+  "devDependencies": {
+    "react-scripts": "0.7.0"
+  },
+  "dependencies": {
+    "es-symbol": "^1.1.2",
+    "es6-shim": "^0.35.1",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "react-router": "^3.0.0",
+    "whatwg-fetch": "^1.0.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "publish": "rm -rf ./docs && npm run build && cp -r ./build ./docs && git add --all && git commit -am 'Publish new static version' && git push origin master && rm -rf ./build"
+  }
+}
