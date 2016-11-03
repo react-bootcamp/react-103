@@ -12,6 +12,8 @@ Redux fournit un concept de `store` de données unique pour l'application (singl
 
 Pour fonctionner Redux utilise une notion de `reducer` qui fonctionne exactement de la même facon qu'une fonction de réduction sur une collection. Si on visualise l'état de l'application comme une collection de mutations, le `reducer` est simplement la fonction qui prend en paramètre l'état précédant et retourne le prochain état via un second paramètre qui dans notre cas est une `action`. Un `reducer` est donc une fonction pure avec la signature suivante `(state, action) => state` qui décrit comment une action transforme l'état courant en un nouvel état.
 
+<img src='https://github.com/react-bootcamp/react-103/raw/master/instructions/img/redux.png' width='800' alt='Reducers'>
+
 Regardons un exemple simple
 
 ```javascript
