@@ -56,7 +56,7 @@ export const unlikeWine = (id) => ???
 export const commentWine = (id, content) => ???
 ```
 
-## Wine details
+## <Wine />
 
 The `<Wine />` component is quite simple as it only need to fetch the details for the current wine
 
@@ -75,7 +75,7 @@ exports.WinePage = connect(mapFromStoreToProps)(WinePage);
 
 the only trick here is that it could be useful to instanciate `<CommentModal />` inside `<Wine />` instead of `<WineApp />` to use `comments` and `liked` props.
 
-## Likes
+## <LikeButton />
 
 the `<LikeButton />` component will be responsible for calling the following actions :
 
@@ -98,7 +98,7 @@ function mapFromStoreToProps(store) {
 exports.LikeButton = connect(mapFromStoreToProps)(LikeButton);
 ```
 
-## CommentList
+## <CommentList />
 
 The `<CommentList />` component is quite simple as it only need to fetch the comments for the current wine
 
@@ -113,7 +113,7 @@ function mapFromStoreToProps(store) {
 exports.CommentList = connect(mapFromStoreToProps)(CommentList);
 ```
 
-## CommentModal
+## <CommentModal />
 
 the `<CommentModal />` component will be responsible for calling the following actions :
 
