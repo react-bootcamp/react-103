@@ -82,7 +82,7 @@ function mapFromStoreToProps(store) {
 exports.RegionsPage = connect(mapFromStoreToProps)(RegionsPage);
 ```
 
-now you can rewrite the rest of the `RegionsPage` component to use the new props coming from the `redux` store.
+now you can rewrite the rest of the `RegionsPage` component to use the new props coming from the `redux` store. That will include replacing mention of `state` to `props` and dispatching the `fetchRegions` action in the `componentDidMount` phase of the component.
 
 # What's next
 
