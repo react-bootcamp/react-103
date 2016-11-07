@@ -1,31 +1,29 @@
 # Redux
 
-Dans cette étape, nous allons intégrer [Redux](http://redux.js.org/index.html) a notre magnifique application.
+In this step, you will add [Redux](http://redux.js.org/index.html) to your magnificent application
 
-[Redux](http://redux.js.org/index.html) est un container d'état global pour des applications JavaScript.
-Redux peut être utilisé dans n'importe quel environnement et ne dépend pas de `react`. Redux possède quelques
-propriétés très intéressantes en matière de cohérence, de prévisibilité et d'expérience du développeur.
+[Redux](http://redux.js.org/index.html) a predictable state container for JavaScript apps. [Redux](http://redux.js.org/index.html) can be use in any Javascript environment and doesn't depends on `React` at all. [Redux](http://redux.js.org/index.html) has some really insteresting properties in terms of consistency, predicatbility, and developer experience.
 
-Redux peut être vu comme une implémentation du [pattern Flux](https://facebook.github.io/flux/docs/overview.html) avec cependant quelques variations, notamment au niveau de la complexité de mise en place bien moindre que Flux. Redux s'inspire également de patterns propre au langage Elm.
+[Redux](http://redux.js.org/index.html) can be seen as an implementation of the [Flux pattern](https://facebook.github.io/flux/docs/overview.html) with some variations, especially in terms of the setup complexity, which is much less complicated thatn Flux. Redux is also inspired by the Elm language webapp architecture.
 
-Redux fournit un concept de `store` de données unique pour l'application (singleton), auquel nos composants vont s'abonner. Il est ensuite possible de dispatcher des `actions` sur ce `store` qui déclencheront une mutation de l'état contenu dans le `store`. Une fois la mutation effectuée, le `store` notifiera tous ses abonnés du changement d'état. L'intérêt d'un tel pattern devient évident lorsqu'une application grossit et que plusieurs composants `react` ont besoin d'une même source de données. Il est alors plus simple de gérer l'état *fonctionnel* de l'application en dehors des composants et de s'y abonner.
+Redux provides a concept of `store`, that will unique be for the current application (singleton), to which our components will subscribe. It is then possible for the dispatch `actions` to the `store` that will trigger a mutation of the state wrapped in `store`. Once the mutation is complete, the `store` will notify all subscribers that the state has changed. The nice thing with such pattern becomes evident when application grows and that several `react` components require the same data source. It is then easier to manage the **business** application state outside components and just subscribe to it.
 
-Pour fonctionner Redux utilise une notion de `reducer` qui fonctionne exactement de la même facon qu'une fonction de réduction sur une collection. Si on visualise l'état de l'application comme une collection de mutations, le `reducer` est simplement la fonction qui prend en paramètre l'état précédant et retourne le prochain état via un second paramètre qui dans notre cas est une `action`. Un `reducer` est donc une fonction pure avec la signature suivante `(state, action) => state` qui décrit comment une action transforme l'état courant en un nouvel état.
+To operate Redux uses a concept of `reducer` which works exactly the same way than a reduction function on a collection or a stream. If you visualize the application state as a collections of user events that can mutate the current state, then the `reducer` is simply the function that takes as parameters the previous state of the app. and the current user event, and returns the next. A `reducer` therefore is a pure function with the following signature` (state, action) => state` that describes how an action transforms the current state into a new state.
 
 <img src='https://github.com/react-bootcamp/react-103/raw/master/instructions/img/redux.jpg' width='800' alt='Reducers'>
 
-Regardons un exemple simple
+let's take a simple example :
 
 ```javascript
 import { createStore } from 'redux'
 
 /**
- * Ici nous avons un unique reducer qui va gérer un état de type number.
- * On note que l'état initial est fourni via les parametres par defaut
- * On utilise un switch pour gérer les différentes actions,
- * mais ce n'est absolument pas obligatoire
- * A noter qu'il est impératif lors d'une mutation d'état de
- * renvoyer un nouvel état et non l'ancien état muté.
+ * Here we have a unique reducer to handle a state of type `number`
+ * You can notice that the initial test is supplied using ES6 default parameter values
+ * We will use a switch case structure to deal with multiple action types
+ * but it's not mandatory, you can use whatever you want.
+ * WARNING: it is mandatory to return a new instance of the state when you mutate it,
+ * do not mutate the previous state.
  */
 function counter(state = 0, action) {
   switch (action.type) {
@@ -38,35 +36,37 @@ function counter(state = 0, action) {
   }
 }
 
-// Ici nous créons un store pour notre application
-// se basant sur le reducer `counter`
-// l'API du store est la suivante { subscribe, dispatch, getState }.
+/**
+ * here, we create a store for our application
+ * using the `counter` reducer
+ * the API of the store is the following { subscribe, dispatch, getState }.
+ */
 let store = createStore(counter)
 
-// Maintenant nous pouvons nous abonner aux modifications
-// de l'état contenu dans le store.
-// Un cas d'usage pourrait être un composant react qui
-// veut afficher l'état courant du compteur.
-// On note que le nouvel état n'est pas véhiculer dans le
-// callback mais qu'il faut aller le chercher
-// directement sur le store.
+/**
+ * Now we can subscribe to the store and listen to state mutations.
+ * A typical use case could be a React component that
+ * displays the counter state.
+ * You can notice that the new value of the state
+ * is not passed in the notification event, you have to fetch
+ * the new state from the store.
+ */
 store.subscribe(() =>
   console.log(store.getState())
 )
 
-// Maintenant, le seul moyen de muter l'état interne
-// du store est de lui envoyer une action
+// now the only way to mutate the internal state of the store
+// is to dispatch an action
 store.dispatch({ type: 'INCREMENT' })
-// afficher 1 dans la console
+// will display 1 in the console
 store.dispatch({ type: 'INCREMENT' })
-// afficher 2 dans la console
+// will display 2 in the console
 store.dispatch({ type: 'DECREMENT' })
-// afficher 1 dans la console
+// will display 3 in the console
 ```
 
-Il est bien évidemment possible d'avoir plusieurs `reducers`, ou de faire en sorte qu'un reducer ne soit en charge que d'une partie de l'état global, etc ...
-
-Pour plus de détails et explications sur Redux, vous pouvez consulter la [documentation de la librairie](http://redux.js.org/index.html) qui est très bien faite.
+It is possible to split the reducer in multiple reducers so one reducer will only handle a part of the global state.
+If you want to know more about Redux, you can read the [library documentation](http://redux.js.org/index.html) which is really great
 
 ## Try it out
 
