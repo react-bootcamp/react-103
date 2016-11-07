@@ -62,7 +62,7 @@ store.dispatch({ type: 'INCREMENT' })
 store.dispatch({ type: 'INCREMENT' })
 // will display 2 in the console
 store.dispatch({ type: 'DECREMENT' })
-// will display 3 in the console
+// will display 1 in the console
 ```
 
 It is possible to split the reducer in multiple reducers so one reducer will only handle a part of the global state.
@@ -82,8 +82,12 @@ or
 yarn add redux
 ```
 
-then you can create a `tryoutredux.js` file, add the previous example and run it using
+then you can create a `tryoutredux.js` file at the root of the project, add the previous example and run it using
 
 ```
 node tryoutredux.js
 ```
+
+# What's next
+
+Now you're ready to use `react-redux`. Go to the [next step](./1-react-redux.md) to learn how to do that.

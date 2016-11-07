@@ -1,6 +1,9 @@
 ## react-redux
 
-Connecter un composant react à notre store est finalement très simple. Il suffit simplement d'abonner le composant au store une fois monté dans le DOM, le désabonner lors de sa disparition du DOM et mettre a jour son état a chaque notification du store. Par exemple, pour un composant lambda :
+Now that you know how to use redux, you have to learn how to use it with `react`. Connect a `react` component to a redux store is pretty easy.
+You just have to subscribe to the store mutations once mounted into the DOM (do not forget to unsubscribe before unmounting the component from the DOM) and update the view whenever you receive a notification from the store.
+
+Let's try to write a naïve implementation :
 
 ```javascript
 const Component = React.createClass({
@@ -16,17 +19,15 @@ const Component = React.createClass({
     };
   },
   componentDidMount() {
-    // lorsque l'on monte le composant dans le DOM, on souscrit aux notification du store
-    // afin de savoir lorsque celui-ci est mis à jour
+    // When the component is mounted into the DOM, we subscribe to store notifications.
     this.unsubscribe = this.props.store.subscribe(this.updateViewFromRedux);
   },
   componentWillUnmount() {
-    // lorsqu'on démonte le composant du DOM, on annule la souscription aux notifications
-    // pour ne pas mettre à jour un composant qui n'existe plus
+    // When the component is unmounted, we unsubscribe to avoid updating a no longer existant component instance
     this.unsubscribe();
   },
   updateViewFromRedux() {
-    const { counter } = this.props.store.getState(); // on récupère l'état complet du store
+    const { counter } = this.props.store.getState(); // we fetch the complete updated state from the store
     this.setState({ counter });
   },
   render() {
@@ -39,40 +40,58 @@ const Component = React.createClass({
 });
 ```
 
-Cependant tout ce boilerplate peut se réveler fastidieux et rébarbatif à écrire à la longue.
-Pour éviter tout ce code inutile, la librairie `react-redux` permet de fournir un store a un arbre de composants `react` et de connecter un composant `react` a ce store, voire même de mapper automatiquement des propriétés de l'état du `store` sur des propriétés du composant.
+However all that boilerplate can be tedious and daunting to write at length.
+To avoid this unnecessary code, the `react-redux` library allows to provide a redux store to a `react` components tree and connect a `react` component to that store, and even automatically map of parts from the `store` on the component properties.
 
-La première chose à faire est de fournir le store a notre arbre de composants. Nous allons utiliser un composant `<Provider store={...} />` fourni par `react-redux` que nous allons placer à la racine de l'application dans le fichier `src/app.js`
+The first thing to do here is to install `react-redux`, but it should be already done if you have cloned the `react-103` repository and installed its dependencies.
+
+```
+npm install --save react-redux
+```
+
+or
+
+```
+yarn add react-redux
+```
+
+Then we need to provide the `store` to our components tree. We will use a `<Provider store = {...} />` component provided by `react-redux` at the root of the application in the` src/index.js`. `<Provider store = {...} />` is use to "inject" the store in the component to make it available to all the components owned by the components tree.
+
 
 ```javascript
+import 'es6-shim'; // yeah, polyfill all the things !!!
+import 'whatwg-fetch'; // yeah, polyfill all the things !!!
+import Symbol from 'es-symbol';
+if (!window.Symbol) {
+  window.Symbol = Symbol; // yeah, polyfill all the things !!!
+}
+import './index.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-import WineApp from './components/wine-app';
-import { RegionsPage } from './components/regions';
-import { WineListPage } from './components/wine-list';
-import { WinePage } from './components/wine';
-import { NotFound } from './components/not-found';
-
-import { Router, Route, browserHistory, IndexRoute } from 'react-router';
-
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import app from './reducers';
+import { createStore, applyMiddleware } from 'redux';
+import { Router, Route, IndexRoute, browserHistory } from 'react-router'
+import { WineApp, RegionsPage, WineListPage, WinePage, NotFound } from './components';
 
-const store = createStore(app);
+function counter(state = 0, action) {
+  switch (action.type) {
+  case 'INCREMENT':
+    return state + 1
+  case 'DECREMENT':
+    return state - 1
+  default:
+    return state
+  }
+}
 
-...
+const store = createStore(counter);
 
-export const App = React.createClass({
-  propTypes: {
-    history: PropTypes.object
-  },
+const RoutedApp = React.createClass({
   render() {
-    const history = this.props.history || browserHistory;
     return (
       <Provider store={store}>
-        <Router history={history}>
+        <Router history={browserHistory}>
           <Route path="/" component={WineApp}>
             <IndexRoute component={RegionsPage} />
             <Route path="regions/:regionId" component={WineListPage} />
@@ -84,19 +103,20 @@ export const App = React.createClass({
     );
   }
 });
+
+ReactDOM.render(<RoutedApp />, document.getElementById('root'));
 ```
+Provider will simply feed the `react` context with a `store` field. (for more details about the `react` context, go to [https://facebook.github.io/react/docs/context.html](https://facebook.github.io/react/docs/context.html))
 
-Provider va simplement alimenter le context `react` avec un champ `store`. (pour plus de détails sur le contexte `react`, voir [https://facebook.github.io/react/docs/context.html](https://facebook.github.io/react/docs/context.html))
+Now you need to be able to get the store from inside a component instance to be able to
 
-Il faut maintenant être capable de récupérer le store dans un composant afin de pouvoir
+* dispatch actions
+* fetch the state from the store
 
-* dispatcher des actions
-* récupérer l'état du store
-
-Pour celà, `redux` propose une fonction `connect` permettant de créer un composant wrapper (Higher Order Component) qui fera le lien entre le store présent dans le contexte `react` et le componsant wrappé. Par exemple, si dans un composant quelconque (le composant ci-dessous est fourni à titre d'exemple) nous voulons dispatcher une action `react` :
+to do that, `redux` provide a function called `connect` that allow you to create some sort of wrapper (Higher Order Component) that will link your wrapped component to the `redux` store available in the `react` context. For example, if you want to dispatch an action from a simple component :
 
 ```javascript
-import { incrementCounter } from '../actions';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 const SimpleComponent = React.createClass({
@@ -104,7 +124,7 @@ const SimpleComponent = React.createClass({
     dispatch: PropTypes.func
   },
   handleButtonClick() {
-    dispatch(incrementCounter(42));
+    this.props.dispatch({ type: 'INCREMENT' });
   },
   render() {
     ...
@@ -114,57 +134,67 @@ const SimpleComponent = React.createClass({
 export const ConnectedToStoreComponent = connect()(SimpleComponent);
 ```
 
-ici le fait d'appeler `connect` avec le composant original en paramètre créé une nouvelle classe de composant comportant la logique d'abonnement et mise a jour du composant nécessaire à `redux`. Lorsque `connect` est appelé sans premier argument, le composant wrappé se voit ajouter une propriété `dispatch` permettant de dispatcher une action sur le store. Dans le cas de notre application, les deux composant qui auraient besoin d'accéder seulement au `dispatch` du store sont bien évidemment, les composants `WinePage` (pour gérer le like) et `Comments` (pour gérer l'ajout de commentaires).
+here, when you call `connect` with the original component as a parameter, it will return a new component class that will handle the subscription and update logic to make your component work with redux.
+When you call connect without a first parameter, the wrapped component will only have one property added called `dispatch`. This property is a function that you can use to dispatch any action to the current `redux` store.
 
-Cependant en utilisant seulement `connect()(Composant)`, il n'est pas possible de récupérer l'état courant du store. Pour ce faire, il est nécessaire de spécifier une fonction de mapping (`connect(mapStateToProps)(Composant`) permettant d'extraire un ensemble de propriétés depuis l'état du store `redux` pour qu'elles soient ajoutées aux propriétés du composant wrappé (ici encore, le composant suivant est fourni à titre d'exemple) :
+However, when you use `connect()(YourComponent)`, it is not possible to access the current state of the store. If you want to do that, you'll have to pass a mapping function as the first parameter of `connect(mapStateToProps)(YourComponent)` with the following signature `(storeState: Any) => propertiesPassedToYourComponent: Object`
 
 ```javascript
-import { incrementCounter } from '../actions';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 const SimpleComponent = React.createClass({
   propTypes: {
     dispatch: PropTypes.func,
-    simpleCounter: PropTypes.number
+    counter: PropTypes.number
   },
-  handleButtonClick() {
-    this.props.dispatch(incrementCounter(42));
+  handleButtonIncrement() {
+    this.props.dispatch({ type: 'INCREMENT' });
+  },
+  handleButtonDecrement() {
+    this.props.dispatch({ type: 'DECREMENT' });
   },
   render() {
     return (
       <div>
         <span>Clicked : {this.props.counter}  </span>
-        <button type="button" onClick={this.handleButtonClick}>+1</button>
+        <button type="button" onClick={this.handleButtonDecrement}>-1</button>
+        <button type="button" onClick={this.handleButtonIncrement}>+1</button>
       </div>
     );
   }
 });
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
   return {
-    simpleCounter: state.counter
-  }
+    counter: state
+  };
 };
 
 export const ConnectedToStoreComponent = connect(mapStateToProps)(SimpleComponent);
 ```
 
-Il ne nous reste donc plus qu'a émettre les différentes actions au bon moment pour muter l'état de notre `store` (ajout de commentaire, ajout de like, retrait de like) et de rajouter un composant global (`<GlobalStats>` dans `<WineApp>` par exemple) affichant le nombre global de likes et de commentaires dans l'application. C'est ce composant qui aura besoin d'une fonction type `mapStateToProps` afin de récupérer les données nécessaire depuis le `store`.
-
-Au final, l'arbre de composants effectifs pour ce genre d'application sera le suivant :
+In the end, the effective component tree when your using this kind of component will be the following :
 
 ```javascript
 const store = ...
 const mapStateToProps = (state) => ({ simpleCounter: state.counter });
 ...
 <Provider store={store}>
-  // Connector est créé via l'appel à connect() sur le composant wrappe (SimpleComponent)
-  <Connector mapStateToProps={mapStateToProps}>
+  // ConnectorOfSimpleComponent is created when you call `connect()` on the wrapped component `SimpleComponent`
+  <ConnectorOfSimpleComponent mapStateToProps={mapStateToProps}>
     <SimpleComponent
-      dispatch={Provider.store.dispatch} // dispatch est récupéré depuis le Provider
-      // simpleCounter est récupéré la fonction mapStateToProps du Connector
-      // appelé sur le store récupéré depuis le Provider
-      simpleCounter={Connector.mapStateToProps(Provider.store.getState()).simpleCounter} />
-  </Connector>
+      dispatch={Provider.store.dispatch} // dispatch is fetched from the Provider context
+      // props are fetch from the function mapStateToProps of ConnectorOfSimpleComponent called with the state of the store as parameter
+      { ...Connector.mapStateToProps(Provider.store.getState()) } />
+  </ConnectorOfSimpleComponent>
 </Provider>
 ```
+
+## Try it out
+
+To try out `react-redux`, just create a new `React` component similar to `SimpleComponent` and mount it from inside the `WineApp` so it can be visible from any page.
+
+# What's next
+
+Now you're ready to use `redux-thunk`. Go to the [next step](./2-redux-thunk.md) to learn how to do that.
