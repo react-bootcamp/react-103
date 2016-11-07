@@ -10,7 +10,7 @@ Redux provides a concept of `store`, that will unique be for the current applica
 
 To operate Redux uses a concept of `reducer` which works exactly the same way than a reduction function on a collection or a stream. If you visualize the application state as a collections of user events that can mutate the current state, then the `reducer` is simply the function that takes as parameters the previous state of the app. and the current user event, and returns the next. A `reducer` therefore is a pure function with the following signature` (state, action) => state` that describes how an action transforms the current state into a new state.
 
-<img src='https://github.com/react-bootcamp/react-103/raw/master/instructions/img/redux.jpg' width='800' alt='Reducers'>
+<img src='https://github.com/react-bootcamp/react-103/raw/master/instructions/img/redux.jpg' width='100%' alt='Reducers'>
 
 let's take a simple example :
 
