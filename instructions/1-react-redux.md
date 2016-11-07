@@ -193,7 +193,7 @@ const mapStateToProps = (state) => ({ simpleCounter: state.counter });
 
 ## Try it out
 
-To try out `react-redux`, just create a new `React` component similar to `SimpleComponent` and mount it from inside the `WineApp` so it can be visible from any page.
+To try out `react-redux`, just create a new `react` component similar to `SimpleComponent` and mount it from inside the `WineApp` so it can be visible from any page.
 
 # What's next
 

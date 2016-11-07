@@ -2,7 +2,7 @@
 
 Now that you know everything you have to know on `redux` and `react-redux`, we are going to spend a little amount of time to talk about `redux-thunk`.
 
-It is quite obvious now that some actions in the app will have to trigger HTTP calls and then dispatch the result of the call as an action. We will have to be able to dispatch multiple times during the same action to be able to put all the logic inside actions. This kind of behaviour is not the default in `redux` and we will have to add a [`middleware redux`](http://redux.js.org/docs/advanced/Middleware.html) to handle this use case.
+It is quite obvious now that some actions in the app will have to trigger HTTP calls and then dispatch the result of the call as an action. We will have to be able to dispatch multiple times during the same action to be able to put all the logic inside actions. This kind of behaviour is not the default in `redux` and we will have to add a [`redux middleware`](http://redux.js.org/docs/advanced/Middleware.html) to handle this use case.
 
 We are going to use [`redux-thunk`](https://github.com/gaearon/redux-thunk) that aims to provide Inversion Of Control (the action is responsible for dispatch instead of being dispatched) at `redux` actions level.
 

@@ -21,7 +21,7 @@ export const reducer = combineReducers({
 });
 ```
 
-## Handle HTTP loading globally
+## Handling HTTP loading globally
 
 One thing we want to do is to add a common logic in the app to handle data loading. To do that, we will create a special reducer that can handle such thing. Create a `src/reducers/http.js` file with the following code
 

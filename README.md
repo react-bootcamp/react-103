@@ -10,7 +10,7 @@ React 103 is a workshop for those that want to learn React.js and its ecosystem,
 
 During the workshop you will create a webapp to manage your favorite wines* !
 
-The source code is based on the previous version of the app described in [react-102](https://github.com/react-bootcamp/react-102).
+The source code is based on the previous version of the app described in [react-102](http://bit.ly/rb-102).
 
 In this version, the app will make heavy usage of [Redux](http://redux.js.org/index.html)
 

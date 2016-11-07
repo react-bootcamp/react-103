@@ -2,7 +2,7 @@
 
 In this step, you will add [Redux](http://redux.js.org/index.html) to your magnificent application
 
-[Redux](http://redux.js.org/index.html) a predictable state container for JavaScript apps. [Redux](http://redux.js.org/index.html) can be use in any Javascript environment and doesn't depends on `React` at all. [Redux](http://redux.js.org/index.html) has some really insteresting properties in terms of consistency, predicatbility, and developer experience.
+[Redux](http://redux.js.org/index.html) a predictable state container for JavaScript apps. [Redux](http://redux.js.org/index.html) can be use in any Javascript environment and doesn't depends on `react` at all. [Redux](http://redux.js.org/index.html) has some really insteresting properties in terms of consistency, predicatbility, and developer experience.
 
 [Redux](http://redux.js.org/index.html) can be seen as an implementation of the [Flux pattern](https://facebook.github.io/flux/docs/overview.html) with some variations, especially in terms of the setup complexity, which is much less complicated thatn Flux. Redux is also inspired by the Elm language webapp architecture.
 

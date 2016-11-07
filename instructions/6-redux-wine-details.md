@@ -125,4 +125,4 @@ and won't need particular data from the store.
 
 # What's next
 
-Now you're a `React` ninja and you can start bragging on twitter. Congratulations ;-)
+Now you're a `react` ninja and you can start bragging on twitter. Congratulations ;-)

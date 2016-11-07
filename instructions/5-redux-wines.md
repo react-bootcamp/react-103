@@ -30,4 +30,4 @@ exports.WineListPage = connect(mapFromStoreToProps)(WineListPage);
 
 # What's next
 
-Now you're ready to use `redux` to load some wine details. Go to the [next step](./6-wine-details.md) to learn how to do that.
+Now you're ready to use `redux` to load some wine details. Go to the [next step](./6-redux-wine-details.md) to learn how to do that.
