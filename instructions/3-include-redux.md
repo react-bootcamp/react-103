@@ -21,7 +21,69 @@ export const reducer = combineReducers({
 });
 ```
 
-then you will need to modify the content of the main file of your app to look like the following
+## Handle HTTP loading globally
+
+One thing we want to do is to add a common logic in the app to handle data loading. To do that, we will create a special reducer that can handle such thing. Create a `src/reducers/http.js` file with the following code
+
+```javascript
+export const loading = (state = { state: 'LOADED', error: undefined }, action) => {
+  switch (action.type) {
+    case 'HTTP_LOADING':
+      return Object.assign({}, state, { state: 'HTTP_LOADING', error: undefined });
+    case 'HTTP_LOADED':
+      return Object.assign({}, state, { state: 'HTTP_LOADED', error: undefined });
+    case 'HTTP_ERROR':
+      return Object.assign({}, state, { state: 'HTTP_ERROR', error: action.error });
+    default:
+      return state;
+  }
+};
+```
+
+now you need to add this reducer to the global reducer used with the store. Modify the `src/reducers/index.js` file like
+
+```javascript
+import { combineReducers } from 'redux';
+import { routerReducer } from 'react-router-redux';
+import { loading } from './http';
+
+// here combineReducers is use to split the main reducer into smaller ones
+export const reducer = combineReducers({
+  loading,
+  // this one is a special reducer to sync the router with the redux store
+  routing: routerReducer
+});
+```
+
+and then you need to define some actions to mutate the `loading` part of the state. To do that, edit the `src/actions/index.js` file
+
+
+```javascript
+export const setHttpLoading = () => {
+  return {
+    type: 'HTTP_LOADING',
+  };
+}
+
+export const setHttpLoaded = () => {
+  return {
+    type: 'HTTP_LOADED',
+  };
+}
+
+export const setHttpError = (error) => {
+  return {
+    type: 'HTTP_ERROR',
+    error
+  };
+}
+```
+
+and now you're ready to load some HTTP data ;-)
+
+## The main entry point
+
+The last thing to do here is to modify the content of the main file of your app to look like the following
 
 ```javascript
 import 'es6-shim'; // yeah, polyfill all the things !!!
