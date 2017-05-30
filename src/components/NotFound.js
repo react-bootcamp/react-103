@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-export const NotFound = React.createClass({
+export class NotFound extends Component {
   render() {
     return (
       <h1>Not Found !!!!</h1>
     );
   }
-});
+}

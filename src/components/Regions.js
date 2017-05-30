@@ -1,12 +1,14 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import * as WinesService from '../services/Wines';
 import { Loader } from '.';
 
-export const Regions = React.createClass({
-  onSelectRegion(e, region) {
+export class Regions extends Component {
+
+  onSelectRegion = (e, region) => {
     e.preventDefault();
     this.props.onSelectRegion(region);
-  },
+  };
+
   render() {
     return (
       <div className="col s12 m6 l4 offset-m3 offset-l4">
@@ -24,18 +26,19 @@ export const Regions = React.createClass({
       </div>
     );
   }
-});
+}
 
-export const RegionsPage = React.createClass({
-  contextTypes: {
+export class RegionsPage extends Component {
+
+  static contextTypes = {
     router: PropTypes.object
-  },
-  getInitialState() {
-    return {
-      loading: false,
-      regions: [],
-    };
-  },
+  };
+
+  state = {
+    loading: false,
+    regions: [],
+  };
+
   componentDidMount() {
     this.setState({ loading: true }, () => {
       WinesService.fetchRegions().then(regions => {
@@ -45,15 +48,17 @@ export const RegionsPage = React.createClass({
         });
       });
     });
-  },
-  onSelectRegion(region) {
+  }
+
+  onSelectRegion = (region) => {
     const root = window.location.hostname === 'react-bootcamp.github.io'
       ? '/react-wines-102/'
       : '/';
     this.context.router.push({
       pathname: `${root}regions/${region}`
     });
-  },
+  }
+
   render() {
     if (this.state.loading) {
       return <div className="center-align"><Loader /></div>
@@ -65,4 +70,4 @@ export const RegionsPage = React.createClass({
         region={{}} />
     );
   }
-});
+}

@@ -6,30 +6,33 @@ You just have to subscribe to the store mutations once mounted into the DOM (do 
 Let's try to write a naïve implementation :
 
 ```javascript
-const Component = React.createClass({
-  propTypes: {
+class Component extends Comopnent {
+  static propTypes = {
     store: PropTypes.shape({
       subscribe: PropTypes.func,
       getState: PropTypes.func
     })
-  },
-  getInitialState() {
-    return {
-      counter: 0
-    };
-  },
+  };
+
+  state = {
+    counter: 0
+  };
+
   componentDidMount() {
     // When the component is mounted into the DOM, we subscribe to store notifications.
     this.unsubscribe = this.props.store.subscribe(this.updateViewFromRedux);
-  },
+  }
+
   componentWillUnmount() {
     // When the component is unmounted, we unsubscribe to avoid updating a no longer existant component instance
     this.unsubscribe();
-  },
-  updateViewFromRedux() {
+  }
+
+  updateViewFromRedux = () => {
     const { counter } = this.props.store.getState(); // we fetch the complete updated state from the store
     this.setState({ counter });
-  },
+  }
+
   render() {
     return (
       <div>
@@ -37,7 +40,7 @@ const Component = React.createClass({
       </div>
     );
   }
-});
+}
 ```
 
 However all that boilerplate can be tedious and daunting to write at length.
@@ -62,17 +65,17 @@ Then we need to provide the `store` to our components tree. We will use a `<Prov
 import 'es6-shim'; // yeah, polyfill all the things !!!
 import 'whatwg-fetch'; // yeah, polyfill all the things !!!
 import Symbol from 'es-symbol';
-if (!window.Symbol) {
-  window.Symbol = Symbol; // yeah, polyfill all the things !!!
-}
-import './index.css';
-
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 import { WineApp, RegionsPage, WineListPage, WinePage, NotFound } from './components';
+import './index.css';
+
+if (!window.Symbol) {
+  window.Symbol = Symbol; // yeah, polyfill all the things !!!
+}
 
 function counter(state = 0, action) {
   switch (action.type) {
@@ -87,7 +90,7 @@ function counter(state = 0, action) {
 
 const store = createStore(counter);
 
-const RoutedApp = React.createClass({
+class RoutedApp extends Component {
   render() {
     return (
       <Provider store={store}>
@@ -102,7 +105,7 @@ const RoutedApp = React.createClass({
       </Provider>
     );
   }
-});
+}
 
 ReactDOM.render(<RoutedApp />, document.getElementById('root'));
 ```
@@ -116,20 +119,22 @@ Now you need to be able to get the store from inside a component instance to be 
 to do that, `redux` provide a function called `connect` that allow you to create some sort of wrapper (Higher Order Component) that will link your wrapped component to the `redux` store available in the `react` context. For example, if you want to dispatch an action from a simple component :
 
 ```javascript
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-const SimpleComponent = React.createClass({
-  propTypes: {
+class SimpleComponent extends Component {
+  static propTypes = {
     dispatch: PropTypes.func
-  },
-  handleButtonClick() {
+  };
+
+  handleButtonClick = () => {
     this.props.dispatch({ type: 'INCREMENT' });
-  },
+  }
+
   render() {
     ...
   }
-});
+}
 
 export const ConnectedToStoreComponent = connect()(SimpleComponent);
 ```
@@ -140,20 +145,23 @@ When you call connect without a first parameter, the wrapped component will only
 However, when you use `connect()(YourComponent)`, it is not possible to access the current state of the store. If you want to do that, you'll have to pass a mapping function as the first parameter of `connect(mapStateToProps)(YourComponent)` with the following signature `(storeState: Any) => propertiesPassedToYourComponent: Object`
 
 ```javascript
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-const SimpleComponent = React.createClass({
-  propTypes: {
+class SimpleComponent extends Component {
+  static propTypes = {
     dispatch: PropTypes.func,
     counter: PropTypes.number
-  },
-  handleButtonIncrement() {
+  };
+
+  handleButtonIncrement = () => {
     this.props.dispatch({ type: 'INCREMENT' });
-  },
-  handleButtonDecrement() {
+  };
+
+  handleButtonDecrement = () => {
     this.props.dispatch({ type: 'DECREMENT' });
-  },
+  };
+
   render() {
     return (
       <div>
@@ -163,7 +171,7 @@ const SimpleComponent = React.createClass({
       </div>
     );
   }
-});
+}
 
 const mapStateToProps = (state) => {
   return {

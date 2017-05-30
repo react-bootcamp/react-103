@@ -70,7 +70,7 @@ function mapFromStoreToProps(store) {
   };
 }
 
-exports.WinePage = connect(mapFromStoreToProps)(WinePage);
+export const WinePage = connect(mapFromStoreToProps)(_WinePage);
 ```
 
 the only trick here is that it could be useful to instanciate `<CommentModal />` inside `<Wine />` instead of `<WineApp />` to use `comments` and `liked` props.
@@ -95,7 +95,7 @@ function mapFromStoreToProps(store) {
   };
 }
 
-exports.LikeButton = connect(mapFromStoreToProps)(LikeButton);
+export const LikeButton = connect(mapFromStoreToProps)(_LikeButton);
 ```
 
 ## CommentList
@@ -110,7 +110,7 @@ function mapFromStoreToProps(store) {
   };
 }
 
-exports.CommentList = connect(mapFromStoreToProps)(CommentList);
+export const CommentList = connect(mapFromStoreToProps)(_CommentList);
 ```
 
 ## CommentModal

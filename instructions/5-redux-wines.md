@@ -25,7 +25,7 @@ function mapFromStoreToProps(store) {
   };
 }
 
-exports.WineListPage = connect(mapFromStoreToProps)(WineListPage);
+export const WineListPage = connect(mapFromStoreToProps)(_WineListPage);
 ```
 
 # What's next

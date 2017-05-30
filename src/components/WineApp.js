@@ -1,14 +1,17 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 
-export const WineApp = React.createClass({
-  contextTypes: {
+export class WineApp extends Component {
+
+  static contextTypes = {
     router: PropTypes.object
-  },
-  goBack(e) {
+  };
+
+  goBack = (e) => {
     e.preventDefault();
     this.context.router.goBack();
-  },
-  goHome(e) {
+  };
+
+  goHome = (e) => {
     e.preventDefault();
     const root = window.location.hostname === 'react-bootcamp.github.io'
       ? '/react-wines-103/'
@@ -16,7 +19,8 @@ export const WineApp = React.createClass({
     this.context.router.push({
       pathname: `${root}`
     });
-  },
+  }
+
   render() {
     const displayButton = window.location.pathname === '/' || window.location.pathname === '/react-wines-102/'
       ? false
@@ -43,4 +47,4 @@ export const WineApp = React.createClass({
       </div>
     );
   }
-});
+}

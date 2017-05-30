@@ -1,9 +1,9 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Loader } from '.';
 import * as WinesService from '../services/Wines';
 import { LikeButton, CommentButton, CommentList, CommentModal } from '.';
 
-export const Wine = React.createClass({
+export class Wine extends Component {
   render() {
     if (this.props.wine === null) {
       return null;
@@ -34,19 +34,20 @@ export const Wine = React.createClass({
       </div>
     );
   }
-});
+}
 
-export const WinePage = React.createClass({
-  contextTypes: {
+export class WinePage extends Component {
+
+  static contextTypes = {
     router: PropTypes.object
-  },
-  getInitialState() {
-    return {
-      loading: false,
-      selectedWine: null,
-      commentModalOpen: false,
-    };
-  },
+  };
+
+  state = {
+    loading: false,
+    selectedWine: null,
+    commentModalOpen: false,
+  };
+
   componentDidMount() {
     const id = this.props.params.wineId;
     this.setState({ loading: true }, () => {
@@ -57,13 +58,16 @@ export const WinePage = React.createClass({
         });
       });
     });
-  },
-  closeCommentModal() {
+  }
+
+  closeCommentModal = () => {
     this.setState({ commentModalOpen: false });
-  },
-  openCommentModal() {
+  }
+
+  openCommentModal = () => {
     this.setState({ commentModalOpen: true });
-  },
+  }
+
   render() {
     if (this.state.loading) {
       return <div className="center-align"><Loader /></div>
@@ -81,4 +85,4 @@ export const WinePage = React.createClass({
       </div>
     );
   }
-});
+}

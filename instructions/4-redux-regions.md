@@ -67,9 +67,9 @@ export const reducer = combineReducers({
 
 ## Wire the components
 
-now the last thing we need to do is to wire the `RegionsPage` component with the store and remove all of its internal state
+now the last thing we need to do is to wire the `_RegionsPage` component with the store and remove all of its internal state
 
-to do that, you will need to connect the `RegionsPage` component to the store using the `react-redux connect()` function and map some part of the state to the component props.
+to do that, you will need to connect the `_RegionsPage` component to the store using the `react-redux connect()` function and map some part of the state to the component props.
 
 ```javascript
 function mapFromStoreToProps(store) {
@@ -79,10 +79,10 @@ function mapFromStoreToProps(store) {
   };
 }
 
-exports.RegionsPage = connect(mapFromStoreToProps)(RegionsPage);
+export const RegionsPage = connect(mapFromStoreToProps)(_RegionsPage);
 ```
 
-now you can rewrite the rest of the `RegionsPage` component to use the new props coming from the `redux` store. That will include replacing mention of `state` to `props` and dispatching the `fetchRegions` action in the `componentDidMount` phase of the component.
+now you can rewrite the rest of the `_RegionsPage` component to use the new props coming from the `redux` store. That will include replacing mention of `state` to `props` and dispatching the `fetchRegions` action in the `componentDidMount` phase of the component.
 
 # What's next
 
