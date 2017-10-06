@@ -15,7 +15,7 @@ To operate Redux uses a concept of `reducer` which works exactly the same way th
 let's take a simple example :
 
 ```javascript
-import { createStore } from 'redux'
+const {createStore} = require('redux');
 
 /**
  * Here we have a unique reducer to handle a state of type `number`
