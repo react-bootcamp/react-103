@@ -3,7 +3,7 @@ import 'whatwg-fetch'; // yeah, polyfill all the things !!!
 import Symbol from 'es-symbol';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, IndexRoute, browserHistory } from 'react-router'
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import { WineApp, RegionsPage, WineListPage, WinePage, NotFound } from './components';
 import './index.css';
 
@@ -13,9 +13,8 @@ if (!window.Symbol) {
 
 class RoutedApp extends Component {
   render() {
-    const root = window.location.hostname === 'react-bootcamp.github.io'
-      ? '/react-wines-102/'
-      : '/';
+    const root =
+      window.location.hostname === 'react-bootcamp.github.io' ? '/react-wines-102/' : '/';
     return (
       <Router history={browserHistory}>
         <Route path={root} component={WineApp}>

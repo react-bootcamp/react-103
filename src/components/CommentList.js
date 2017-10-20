@@ -3,10 +3,9 @@ import { Comment, Loader } from '.';
 import * as WinesService from '../services/Wines';
 
 export class CommentList extends Component {
-
   state = {
     loading: false,
-    comments: []
+    comments: [],
   };
 
   componentDidMount() {
@@ -32,7 +31,8 @@ export class CommentList extends Component {
       <div>
         {this.state.comments.length > 0 && <h5>Comments</h5>}
         {this.state.loading && <Loader />}
-        {!this.state.loading && this.state.comments.map(comment => <Comment key={comment.date} comment={comment} />)}
+        {!this.state.loading &&
+          this.state.comments.map(comment => <Comment key={comment.date} comment={comment} />)}
       </div>
     );
   }
