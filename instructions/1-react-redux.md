@@ -49,12 +49,6 @@ To avoid this unnecessary code, the `react-redux` library allows to provide a re
 The first thing to do here is to install `react-redux`, but it should be already done if you have cloned the `react-103` repository and installed its dependencies.
 
 ```
-npm install --save react-redux
-```
-
-or
-
-```
 yarn add react-redux
 ```
 

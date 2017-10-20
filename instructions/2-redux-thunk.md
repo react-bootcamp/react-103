@@ -57,13 +57,7 @@ With `redux-thunk` it's quite easy to write actions that can dispatch other acti
 Don't forget to install `react-redux`, but it should be already done if you have cloned the `react-103` repository and installed its dependencies.
 
 ```
-npm install --save redux-thunk
-```
-
-or
-
-```
-yarn add redux-thunk
+yarn add redux-thunk -E
 ```
 
 # What's next

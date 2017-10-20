@@ -15,7 +15,7 @@ To operate Redux uses a concept of `reducer` which works exactly the same way th
 let's take a simple example :
 
 ```javascript
-const {createStore} = require('redux');
+const { createStore } = require('redux');
 
 /**
  * Here we have a unique reducer to handle a state of type `number`
@@ -73,13 +73,7 @@ If you want to know more about Redux, you can read the [library documentation](h
 First, you have to install `redux` in your project  but it should be already done if you have cloned the `react-103` repository and installed its dependencies.
 
 ```
-npm install --save redux
-```
-
-or
-
-```
-yarn add redux
+yarn add redux -E
 ```
 
 then you can create a `tryoutredux.js` file at the root of the project, add the previous example and run it using
