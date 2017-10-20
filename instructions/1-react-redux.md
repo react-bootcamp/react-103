@@ -119,7 +119,8 @@ Now you need to be able to get the store from inside a component instance to be 
 to do that, `redux` provide a function called `connect` that allow you to create some sort of wrapper (Higher Order Component) that will link your wrapped component to the `redux` store available in the `react` context. For example, if you want to dispatch an action from a simple component :
 
 ```javascript
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class SimpleComponent extends Component {
@@ -145,7 +146,8 @@ When you call connect without a first parameter, the wrapped component will only
 However, when you use `connect()(YourComponent)`, it is not possible to access the current state of the store. If you want to do that, you'll have to pass a mapping function as the first parameter of `connect(mapStateToProps)(YourComponent)` with the following signature `(storeState: Any) => propertiesPassedToYourComponent: Object`
 
 ```javascript
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class SimpleComponent extends Component {

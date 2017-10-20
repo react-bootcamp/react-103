@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Loader } from '.';
 import * as WinesService from '../services/Wines';
 import { LikeButton, CommentButton, CommentList, CommentModal } from '.';
