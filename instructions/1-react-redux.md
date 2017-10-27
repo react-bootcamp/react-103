@@ -6,7 +6,7 @@ You just have to subscribe to the store mutations once mounted into the DOM (do 
 Let's try to write a naïve implementation :
 
 ```javascript
-class Component extends Comopnent {
+class MyComponent extends Component {
   static propTypes = {
     store: PropTypes.shape({
       subscribe: PropTypes.func,
